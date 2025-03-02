@@ -1,14 +1,18 @@
 # LeetCode Helper Bot
 
+Click on the image to view a demo
+[![Watch the video](https://i.imgur.com/1xMm9g1.png)](https://youtu.be/WT9e5guKurw)
+
 A sophisticated AI-powered assistant that helps you understand and solve LeetCode problems by providing personalized guidance, hints, and explanations.
 
 ## 🚀 Setup Instructions
 
 ### Prerequisites
+
 - Python 3.8+ installed
 - A Google API key for Gemini AI access
 - Node.js 14+ (for frontend)
-- Firebase service credentials 
+- Firebase service credentials
 
 ### Frontend Setup
 
@@ -37,7 +41,6 @@ A sophisticated AI-powered assistant that helps you understand and solve LeetCod
 
    Replace the URL with your actual backend API endpoint.
 
- 
 4. **Start the development server**
 
    ```bash
@@ -51,12 +54,14 @@ A sophisticated AI-powered assistant that helps you understand and solve LeetCod
 ### Backend Setup
 
 1. **Clone the repository**
+
    ```bash
    git clone https://github.com/yourusername/leetcode-bot.git
    cd leetcode-bot
    ```
 
 2. **Create and activate a virtual environment**
+
    ```bash
    python -m venv .venv
    # On Windows
@@ -66,6 +71,7 @@ A sophisticated AI-powered assistant that helps you understand and solve LeetCod
    ```
 
 3. **Install dependencies**
+
    ```bash
    pip install -r requirements.txt
    ```
@@ -76,20 +82,18 @@ A sophisticated AI-powered assistant that helps you understand and solve LeetCod
    GOOGLE_API_KEY=your_google_api_key_here
    FRONTEND_URL=http://localhost:3000
    ```
-5.
-**Get your Firestore Service key credentials**
+5. **Get your Firestore Service key credentials**
 
    ```bash
    Save them as firebase_service_key.json at root
    ```
 
    The application will be available at `http://localhost:3000`
+
 6. **Start the FastAPI server**
    ```bash
    uvicorn main:app --reload --host 0.0.0.0 --port 8000
    ```
-
-
 
 ## 🏛️ Architecture
 
@@ -115,23 +119,27 @@ A sophisticated AI-powered assistant that helps you understand and solve LeetCod
 ### Component Breakdown
 
 1. **Frontend (Next.js)**
+
    - User interface for problem selection and chat interaction
    - Real-time messaging with the AI assistant
    - Chat history display
    - Problem description viewer
 
 2. **Backend (FastAPI)**
+
    - RESTful API endpoints for chat functionality
    - LeetCode problem fetching
    - AI model integration
    - Conversation management
 
 3. **LeetCode Integration (scrape.py)**
+
    - Fetches problem descriptions
    - Retrieves top-rated community solutions
    - Parses and structures LeetCode data
 
 4. **AI Integration (llm.py)**
+
    - Integrates with Google's Gemini model
    - Manages conversation context
    - Provides personalized problem-solving guidance
@@ -160,10 +168,9 @@ The AI assistant can help you in several ways:
 
 ### Example Prompts
 
-
 ```
 You are a teacher helping students understand LeetCode problems.
-        
+
 Problem: {leetcode_problem}
 
 You have access to the following solutions: {submitted_solutions}
@@ -189,7 +196,7 @@ AI: Consider what happens when the array is empty or contains duplicates...
 ```
 You: Is my recursive approach efficient enough?
 
-AI: Your recursive approach has a time complexity of O(2^n), which might lead 
+AI: Your recursive approach has a time complexity of O(2^n), which might lead
 to timeout for larger inputs. Consider using dynamic programming to optimize...
 ```
 
@@ -200,12 +207,14 @@ to timeout for larger inputs. Consider using dynamic programming to optimize...
 The LeetCode Helper Bot leverages Google's Gemini model to provide intelligent assistance:
 
 1. **Context Building**:
+
    - The system fetches the complete LeetCode problem description
    - Top community solutions are analyzed for insights
    - The user's conversation history is retrieved
    - All these elements are combined into a rich context prompt
 
 2. **Prompt Engineering**:
+
    - A carefully crafted system prompt instructs the AI to:
      - Act as a helpful teacher
      - Provide step-by-step explanations
@@ -213,6 +222,7 @@ The LeetCode Helper Bot leverages Google's Gemini model to provide intelligent a
      - Guide users toward their own understanding
 
 3. **Conversation Management**:
+
    - Conversations are organized by problem and user ID
    - A global memory store maintains conversation context between requests
    - The system limits context to the most recent messages to prevent token overflow
@@ -228,5 +238,3 @@ The LeetCode Helper Bot leverages Google's Gemini model to provide intelligent a
 - In-memory caching for problem data to reduce LeetCode API requests
 - Conversation trimming to maintain reasonable context windows
 - Batched database operations for efficient history retrieval
-
-

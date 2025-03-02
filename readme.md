@@ -1,19 +1,14 @@
-# LeetCode AI Assistant - Installation Guide
+# LeetCode Helper Bot
 
-## Overview
+A sophisticated AI-powered assistant that helps you understand and solve LeetCode problems by providing personalized guidance, hints, and explanations.
 
-LeetCode AI Assistant is an interactive web application that helps users understand and solve LeetCode coding problems with the assistance of an AI. This document provides detailed installation instructions, explains the system architecture, and offers usage guidelines.
+## 🚀 Setup Instructions
 
-## Prerequisites
-
-Before you begin, ensure you have the following installed:
-
-- Node.js (v16 or later)
-- npm (v7 or later) or yarn
-- Python 3.8+ (for backend)
-- Git
-
-## Setup Instructions
+### Prerequisites
+- Python 3.8+ installed
+- A Google API key for Gemini AI access
+- Node.js 14+ (for frontend)
+- Firebase service credentials 
 
 ### Frontend Setup
 
@@ -42,6 +37,7 @@ Before you begin, ensure you have the following installed:
 
    Replace the URL with your actual backend API endpoint.
 
+ 
 4. **Start the development server**
 
    ```bash
@@ -54,138 +50,183 @@ Before you begin, ensure you have the following installed:
 
 ### Backend Setup
 
-1. **Navigate to the backend directory**
-
+1. **Clone the repository**
    ```bash
-   cd ../backend
+   git clone https://github.com/yourusername/leetcode-bot.git
+   cd leetcode-bot
    ```
 
 2. **Create and activate a virtual environment**
-
    ```bash
-   python -m venv venv
+   python -m venv .venv
    # On Windows
-   venv\Scripts\activate
+   .\.venv\Scripts\activate
    # On macOS/Linux
-   source venv/bin/activate
+   source .venv/bin/activate
    ```
 
 3. **Install dependencies**
-
    ```bash
    pip install -r requirements.txt
    ```
 
-4. **Configure environment variables**
-
-   Create a `.env` file with:
-
+4. **Set up environment variables**
+   Create a .env file in the root directory with:
    ```
-   DATABASE_URL=sqlite:///database.db
-   AI_API_KEY=your_openai_api_key
+   GOOGLE_API_KEY=your_google_api_key_here
+   FRONTEND_URL=http://localhost:3000
+   ```
+5.
+**Get your Firestore Service key credentials**
+
+   ```bash
+   Save them as firebase_service_key.json at root
    ```
 
-5. **Start the backend server**
-
+   The application will be available at `http://localhost:3000`
+6. **Start the FastAPI server**
    ```bash
    uvicorn main:app --reload --host 0.0.0.0 --port 8000
    ```
 
-## System Architecture
 
-### Frontend Architecture
 
-The frontend is built with:
+## 🏛️ Architecture
 
-- **Next.js**: React framework providing server-side rendering and routing
-- **React**: UI component library
-- **Axios**: HTTP client for API requests
+### System Architecture
 
-Key components:
+```
+┌────────────┐     ┌────────────┐     ┌────────────┐
+│            │     │            │     │            │
+│  Frontend  │◄───►│  Backend   │◄───►│  LeetCode  │
+│  (Next.js) │     │  (FastAPI) │     │   API      │
+│            │     │            │     │            │
+└────────────┘     └─────┬──────┘     └────────────┘
+                         │
+                         ▼
+                   ┌────────────┐     ┌────────────┐
+                   │            │     │            │
+                   │  Gemini   │◄───►│  Firestore │
+                   │  AI Model │     │  Database  │
+                   │            │     │            │
+                   └────────────┘     └────────────┘
+```
 
-- `app/page.js`: Main application page with conversation history
-- `components/ui/chat/chat-box.js`: Chat interface component
-- `hooks/use-ai.js`: Custom React hook that manages chat state and API communication
+### Component Breakdown
 
-### Backend Architecture
+1. **Frontend (Next.js)**
+   - User interface for problem selection and chat interaction
+   - Real-time messaging with the AI assistant
+   - Chat history display
+   - Problem description viewer
 
-The backend API is built with:
+2. **Backend (FastAPI)**
+   - RESTful API endpoints for chat functionality
+   - LeetCode problem fetching
+   - AI model integration
+   - Conversation management
 
-- **FastAPI**: Python web framework for building APIs
-- **SQLAlchemy**: ORM for database interactions
-- **LLM Integration**: Connection to AI model for problem-solving assistance
+3. **LeetCode Integration (scrape.py)**
+   - Fetches problem descriptions
+   - Retrieves top-rated community solutions
+   - Parses and structures LeetCode data
 
-API Endpoints:
+4. **AI Integration (llm.py)**
+   - Integrates with Google's Gemini model
+   - Manages conversation context
+   - Provides personalized problem-solving guidance
+   - Maintains conversation history
 
-- `POST /chat`: Send user messages and receive AI responses
-- `POST /get-prev-conversations`: Retrieve conversation history
-- `POST /get-prev-messages`: Retrieve messages for a specific problem
+5. **Database (FirestoreChat)**
+   - Stores conversation history
+   - Enables persistent user sessions
+   - Manages user-specific data
 
-### Data Flow
+## 📝 Usage Guidelines
 
-1. User enters a LeetCode problem URL
-2. Application extracts the problem slug
-3. User sends questions through the chat interface
-4. Frontend passes messages to backend API
-5. Backend processes the message with the AI model
-6. Response is returned to frontend and displayed to the user
-7. Conversation history is stored in the database
+### Getting Started
 
-## Usage Guidelines
+1. **Select a Problem**: Browse or search for a LeetCode problem.
+2. **Start a Conversation**: Ask questions about the selected problem.
 
-### Starting a New Conversation
+### Using the AI Assistant
 
-1. Open the application in your browser
-2. Enter a LeetCode problem URL in the input field (e.g., `https://leetcode.com/problems/two-sum/`)
-3. Click "Submit" to initialize the conversation about this problem
+The AI assistant can help you in several ways:
 
-### Chatting with the AI Assistant
+- **Problem Understanding**: Ask for clarification on problem statements
+- **Hints**: Request progressive hints without full solutions
+- **Algorithmic Guidance**: Learn about relevant algorithms and data structures
+- **Code Improvement**: Get feedback on your approach or implementation
 
-1. Type your question about the problem in the input field at the bottom of the chat box
-2. Press "Send" or hit Enter to submit your question
-3. Wait for the AI to respond with guidance on the problem
-4. Continue the conversation by asking follow-up questions
+### Example Prompts
 
-### Managing Conversations
 
-1. View your conversation history in the sidebar on the left
-2. Click on any previous conversation to resume it
-3. Use the "New Chat" button to start a fresh conversation about a different problem
+```
+You are a teacher helping students understand LeetCode problems.
+        
+Problem: {leetcode_problem}
 
-### Best Practices
+You have access to the following solutions: {submitted_solutions}
 
-- Be specific with your questions for better guidance
-- Break down complex problems into smaller parts
-- Ask for explanations when you don't understand the AI's solution
-- Use the conversation history to revisit previous explanations
+Explain concepts step-by-step. Give hints rather than complete solutions when students are stuck.
+Help the student develop their own approach to solving the problem.
+```
 
-## Troubleshooting
+### Example Interactions
 
-### Common Issues
+```
+You: Can you explain the two-pointer approach for this problem?
 
-1. **Backend connection failure**
+AI: The two-pointer approach works well for this problem because...
+```
 
-   - Ensure the backend server is running
-   - Check that the `NEXT_PUBLIC_BACKEND_URL` in `.env.local` is correct
+```
+You: I'm stuck with the edge cases. Can you give me a hint?
 
-2. **Messages not loading**
+AI: Consider what happens when the array is empty or contains duplicates...
+```
 
-   - Verify you're connected to the internet
-   - Check browser console for errors
-   - Ensure the problem slug is correctly extracted from the URL
+```
+You: Is my recursive approach efficient enough?
 
-3. **AI responses are incomplete**
-   - The AI might have a response length limit
-   - Try breaking down your questions into smaller chunks
+AI: Your recursive approach has a time complexity of O(2^n), which might lead 
+to timeout for larger inputs. Consider using dynamic programming to optimize...
+```
 
-### Getting Help
+## 🤖 GPT Integration Details
 
-If you encounter issues not covered in this guide:
+### How the AI Integration Works
 
-1. Check the issue tracker on the GitHub repository
-2. Create a new issue with details about your problem
-3. Include error messages and steps to reproduce the issue
+The LeetCode Helper Bot leverages Google's Gemini model to provide intelligent assistance:
 
-## License
+1. **Context Building**:
+   - The system fetches the complete LeetCode problem description
+   - Top community solutions are analyzed for insights
+   - The user's conversation history is retrieved
+   - All these elements are combined into a rich context prompt
 
-This project is licensed under the MIT License.
+2. **Prompt Engineering**:
+   - A carefully crafted system prompt instructs the AI to:
+     - Act as a helpful teacher
+     - Provide step-by-step explanations
+     - Give hints rather than complete solutions
+     - Guide users toward their own understanding
+
+3. **Conversation Management**:
+   - Conversations are organized by problem and user ID
+   - A global memory store maintains conversation context between requests
+   - The system limits context to the most recent messages to prevent token overflow
+   - Conversations are persisted in Firestore for long-term storage
+
+4. **Response Generation**:
+   - The AI analyzes the problem, available solutions, and user question
+   - It generates personalized responses targeting the user's specific needs
+   - Code snippets and explanations are provided in a clear, educational format
+
+### Performance Optimization
+
+- In-memory caching for problem data to reduce LeetCode API requests
+- Conversation trimming to maintain reasonable context windows
+- Batched database operations for efficient history retrieval
+
+

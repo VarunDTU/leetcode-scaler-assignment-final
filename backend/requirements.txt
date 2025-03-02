@@ -12,3 +12,4 @@ dotenv
 fastapi
 fastapi[standard]
 fastapi-cors
+firebase_admin

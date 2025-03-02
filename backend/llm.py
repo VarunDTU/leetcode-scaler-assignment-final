@@ -80,7 +80,6 @@ Help the student develop their own approach to solving the problem."""
         conversation_id=conversation_id,
         role="assistant",
         content=response.content,
-        metadata={"model": "gemini-1.5-flash"}
     )
     
     # Log for debugging
@@ -90,9 +89,11 @@ Help the student develop their own approach to solving the problem."""
     
     return response.content
 
-def chat_with_leetcode_bot(problem_slug, userId, message):
+async def chat_with_leetcode_bot(problem_slug, userId, message):
 
-    return asyncio.run(chat_with_leetcode_bot_async(problem_slug, userId, message))
+    res=await chat_with_leetcode_bot_async(problem_slug, userId, message)
+    return res
+
 
 
 

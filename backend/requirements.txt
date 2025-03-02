@@ -1,0 +1,14 @@
+langchain
+langchain-core
+langgraph
+selenium
+beautifulsoup4
+lxml
+html5lib
+python-dotenv
+requests
+langchain-google-genai
+dotenv
+fastapi
+fastapi[standard]
+fastapi-cors
